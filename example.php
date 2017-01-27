@@ -1,6 +1,6 @@
 <?php
 
-include("base.php);
+include("base.php");
 
 if($message == "/start"){
   sendMessage($chat_id, "Hello! Welcome to the bot.");
