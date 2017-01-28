@@ -14,7 +14,10 @@ if($message == "/inlinek"){
       "callback_data" => "callback_data"
     ]
    ];
-  $menu = ["inline_keyboard" => $button1];
+  $structure = [
+    [$button1]
+    ];
+  $menu = ["inline_keyboard" => $structure];
   $menu = json_encode($menu);
   sendMessage($chat_id, "Message with inline keyboard", $menu);
   //I have to improve inline keyboard use, to do more easy
