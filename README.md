@@ -10,3 +10,10 @@ Create a file where you put commands (see `example.php` for an example) and incl
 Feel free to help me in this project.
 
 Stay tuned on [my telegram channel](https://www.t.me/SavinoChannel) for updates
+
+# requirements
+-A domain
+
+-The https on your domain (to set the webhook)
+
+-php5.6 or major
