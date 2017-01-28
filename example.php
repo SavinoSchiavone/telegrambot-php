@@ -9,10 +9,8 @@ if($message == "/start"){
 //message with an inline keyboard
 if($message == "/inlinek"){
   $button1 = [
-    [
       "text" => "Botton text",
       "callback_data" => "callback_data"
-    ]
    ];
   $structure = [
     [$button1]
