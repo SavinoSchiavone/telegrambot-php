@@ -32,7 +32,7 @@ $cb_username = $update["callback_query"]["from"]["username"];
 */
 function sendMessage($chat_id, $message_text, $keyboard = null, $parse_mode = 'HTML')
 {
-	file_get_contents(telegram_api."sendMessage?chat_id=$chat_id&text=$message_text&parse_mode=$parse_mode&disable_web_page_preview=true&disable_notification=false&reply_to_message_id=false&reply_markup=$keyboard");
+	file_get_contents(telegram_api."sendMessage?chat_id=".urlencode($chat_id)."&text=".urlencode($message_text)."&parse_mode=".urlencode($parse_mode)."&disable_web_page_preview=true&disable_notification=false&reply_to_message_id=false&reply_markup=".urlencode($keyboard));
 }
 
 /*
