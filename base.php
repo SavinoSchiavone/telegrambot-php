@@ -1,6 +1,6 @@
 <?php
 
-
+require "class-http-request.php";
 define('telegram_api', "https://api.telegram.org/botTOKEN/");
 $input = file_get_contents('php://input');
 $updates = json_decode($input, true);
@@ -16,13 +16,13 @@ $username = $updates['message']['from']['username'];
 $chat_username = $updates['message']['chat']['username'];
 //callback (inline keyboards) variables
 $cb_data = $updates['callback_query']['data'];
-$cb_id = $update["callback_query"]["id"];
-$cb_msg_id = $update["callback_query"]["message"]["message_id"];
-$cb_chat_id = $update["callback_query"]["message"]["chat"]["id"];
-$cb_user_id = $update["callback_query"]["from"]["id"];
-$cb_first_name = $update["callback_query"]["from"]["first_name"];
-$cb_last_name = $update["callback_query"]["from"]["last_name"];
-$cb_username = $update["callback_query"]["from"]["username"];
+$cb_id = $updates["callback_query"]["id"];
+$cb_msg_id = $updates["callback_query"]["message"]["message_id"];
+$cb_chat_id = $updates["callback_query"]["message"]["chat"]["id"];
+$cb_user_id = $updates["callback_query"]["from"]["id"];
+$cb_first_name = $updates["callback_query"]["from"]["first_name"];
+$cb_last_name = $updates["callback_query"]["from"]["last_name"];
+$cb_username = $updates["callback_query"]["from"]["username"];
 
 
 
@@ -32,35 +32,38 @@ $cb_username = $update["callback_query"]["from"]["username"];
 */
 function sendMessage($chat_id, $message_text, $keyboard = null, $parse_mode = 'HTML')
 {
-	file_get_contents(telegram_api."sendMessage?chat_id=".urlencode($chat_id)."&text=".urlencode($message_text)."&parse_mode=".urlencode($parse_mode)."&disable_web_page_preview=true&disable_notification=false&reply_to_message_id=false&reply_markup=".urlencode($keyboard));
+	$args = [
+		"chat_id" => $chat_id,
+		"text" => $message_text,
+		"parse_mode" => $parse_mode,
+		"reply_markup" => $keyboard,
+		"disable_web_page_preview" => true
+	];
+	$r = new HttpRequest("get", telegram_api."sendMessage", $args);
 }
 
-/*
-*Use the function cb_reply() to edit a message when
-*an inline button is pressed (see example on file example.php)
-*/
-function cb_reply($cb_id, $alert_text, $show_alert = false, $cb_msg_id = false, $new_message_text = false, $new_menu = false)
+//answerCallbackQuery (an alert text)
+function answerCallbackQuery($cb_id, $alert_text, $show_alert = false)
 {
-	global $cb_chat_id;
-
-	file_get_contents(telegram_api."answerCallbackQuery?callback_query_id=$cb_id&text=$alert_text&show_alert=$show_alert");
-
-	if($cb_msg_id)
-	{
-		if($new_menu)
-		{
-			
-			$rm = ['inline_keyboard' => $new_menu];
-			$reply_markup = json_encode($rm);
-		
-		}
-		if ($new_menu) {
-			file_get_contents(telegram_api."editMessageText?chat_id=$cb_chat_id&message_id=$cb_msg_id&text=$new_message_text&reply_markup=$reply_markup");
-		}else{
-			file_get_contents(telegram_api."editMessageText?chat_id=$cb_chat_id&message_id=$cb_msg_id&text=$new_message_text");
-		}
-	}
+	$args = [
+		"callback_query_id" => $cb_id,
+		"text" => $alert_text,
+		"show_alert" => $show_alert
+	];
+	$r = new HttpRequest("get", telegram_api."answerCallbackQuery", $args);
 }
 
+//editMessageText
+function editMessageText($chat_id, $message_id, $text,  $keyboard = null, $parse_mode = 'HTML')
+{
+	$args = [
+		"chat_id" => $chat_id,
+		"message_id" => $message_id,
+		"text" => $text,
+		"parse_mode" => $parse_mode,
+		"reply_markup" => $keyboard
+	];
+	$r = new HttpRequest("get", telegram_api."editMessageText", $args);
+}
 
 ?>
