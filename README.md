@@ -11,9 +11,12 @@ Feel free to help me in this project.
 
 Stay tuned on [my telegram channel](https://www.t.me/SavinoChannel) for updates
 
-# requirements
+# Requirements
 -A domain
 
 -The https on your domain (to set the webhook)
 
 -php5.6 or major
+
+# Bot that uses this base
+Contact me on [telegram @Kaneki666](https://www.t.me/Kaneki666) if you use this base and want to publich your bot username here
