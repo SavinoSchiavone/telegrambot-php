@@ -14,6 +14,7 @@ $first_name = $updates['message']['from']['first_name'];
 $last_name = $updates['message']['from']['last_name'];
 $username = $updates['message']['from']['username'];
 $chat_username = $updates['message']['chat']['username'];
+$chat_type = $updates['message']['chat']['type'];
 //callback (inline keyboards) variables
 $cb_data = $updates['callback_query']['data'];
 $cb_id = $updates["callback_query"]["id"];
@@ -65,5 +66,43 @@ function editMessageText($chat_id, $message_id, $text,  $keyboard = null, $parse
 	];
 	$r = new HttpRequest("get", telegram_api."editMessageText", $args);
 }
+
+/*
+*sendChatAction 
+*Available action (must be a string) :
+*typing, upload_photo, record_video, upload_video, record_audio, upload_audio, upload_document, find_location
+*/
+function sendChatAction($chat_id, $action)
+{
+	$args = [
+		"chat_id" => $chat_id,
+		"action" => $action
+	];
+	$r = new HttpRequest("get", telegram_api."sendChatAction", $args);
+}
+
+//getChatAdministrator
+function getChatAdministrators($chat_id){
+	$args = [
+		'chat_id' => $chat_id
+	];
+	$request = new HttpRequest("get", telegram_api."getChatAdministrators", $args);
+	$result = $request->getResponse();
+	$admins = json_decode($result, true);
+	$text = "Group's staff:";
+	foreach($admins[result] as $admins_list)
+	{
+		if($admins_list[status] == "creator")
+		{
+			$text .= "
+			@".$admins_list[user][username]." [Creator]";
+		}else{
+			$text .= "
+			@".$admins_list[user][username];
+		}
+	}
+	sendMessage($chat_id, $text);
+}
+
 
 ?>
