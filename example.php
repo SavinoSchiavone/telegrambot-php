@@ -3,6 +3,7 @@
 include("base.php");
 
 if($message == "/start"){
+  sendChatAction($chat_id, "typing");
   sendMessage($chat_id, "Hello! Welcome to the bot.");
 }
 
@@ -33,4 +34,8 @@ if($cb_data == "button1"){
   $menu = json_encode($menu);
   answerCallbackQuery($cb_id, "alert message", true);
   editMessageText($cb_chat_id, $cb_msg_id, "Edited message", $menu);
+}
+
+if($message == "/admins" && ($chat_type == "group" or $chat_type == "supergroup")){
+  getChatAdministrators($chat_id);
 }
